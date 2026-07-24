@@ -694,11 +694,20 @@ function InfoMoreRow() {
   );
 }
 
-export default function CommandCenter({ onOpenTierList }) {
+export default function CommandCenter({ user, onOpenTierList, onLogout }) {
   const [reelsAdded, setReelsAdded] = useState(1);
 
   return (
     <div className="command-center">
+      {user && onLogout && (
+        <button
+          className="nm-field nm-raised-sm"
+          style={{ position: 'fixed', top: 20, right: 20, zIndex: 50, border: 'none', cursor: 'pointer', minWidth: 0 }}
+          onClick={onLogout}
+        >
+          <span>{user.username} &middot; Logout</span>
+        </button>
+      )}
       <div className="cc-title">
         <h1>BATHALA COMMAND CENTER</h1>
         <p>every dial does something now &mdash; go click stuff</p>

@@ -62,7 +62,7 @@ export default function App() {
   }
 
   if (showCommandCenter) {
-    return <CommandCenter onOpenTierList={() => setShowCommandCenter(false)} />;
+    return <CommandCenter user={user} onOpenTierList={() => setShowCommandCenter(false)} onLogout={handleLogout} />;
   }
 
   function handleAuth(userData) {
@@ -204,6 +204,14 @@ export default function App() {
       </svg>
       <Tape style={{ top: -10, left: '38%', transform: 'rotate(-3deg)' }} />
       <Tape style={{ top: -8, left: '61%', transform: 'rotate(4deg)' }} />
+
+      <button
+        className="logout-btn"
+        style={{ position: 'fixed', top: 16, left: 16, zIndex: 50 }}
+        onClick={() => setShowCommandCenter(true)}
+      >
+        &larr; Command Center
+      </button>
 
       <header>
         <div className="header-banner">
