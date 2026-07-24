@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# server runtime data (not meant to be committed)
+server/tierlist.db
+server/uploads/*
+!server/uploads/.gitkeep

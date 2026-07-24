@@ -1,0 +1,708 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.command-center {
+  --nm-bg: #e6e7ec;
+  --nm-text: #7a7f8c;
+  --nm-text-dark: #454955;
+  --nm-blue: #4f8fe0;
+  --nm-blue-dark: #3f74c0;
+  --nm-shadow-dark: rgba(163, 177, 198, 0.6);
+  --nm-shadow-light: rgba(255, 255, 255, 0.85);
+
+  background: var(--nm-bg);
+  min-height: 100vh;
+  padding: 48px 32px 80px;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  color: var(--nm-text);
+}
+
+.command-center * {
+  box-sizing: border-box;
+}
+
+.cc-title {
+  max-width: 1400px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.cc-title h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--nm-text-dark);
+  letter-spacing: 1px;
+}
+
+.cc-title p {
+  font-size: 13px;
+  color: var(--nm-text);
+  margin-top: 4px;
+}
+
+.cc-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* ============ SHADOW PRIMITIVES ============ */
+.nm-raised-sm { background: var(--nm-bg); box-shadow: 3px 3px 6px var(--nm-shadow-dark), -3px -3px 6px var(--nm-shadow-light); }
+.nm-raised-md { background: var(--nm-bg); box-shadow: 6px 6px 12px var(--nm-shadow-dark), -6px -6px 12px var(--nm-shadow-light); }
+.nm-raised-lg { background: var(--nm-bg); box-shadow: 10px 10px 22px var(--nm-shadow-dark), -10px -10px 22px var(--nm-shadow-light); }
+.nm-inset-sm { background: var(--nm-bg); box-shadow: inset 3px 3px 6px var(--nm-shadow-dark), inset -3px -3px 6px var(--nm-shadow-light); }
+.nm-inset-md { background: var(--nm-bg); box-shadow: inset 6px 6px 12px var(--nm-shadow-dark), inset -6px -6px 12px var(--nm-shadow-light); }
+.nm-inset-lg { background: var(--nm-bg); box-shadow: inset 9px 9px 18px var(--nm-shadow-dark), inset -9px -9px 18px var(--nm-shadow-light); }
+
+/* ============ TICK RINGS ============ */
+.tick-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #b6bac6;
+  border-radius: 2px;
+}
+
+.tick.tick-blue { background: var(--nm-blue); }
+
+/* ============ BIG NOTCHED DIAL ============ */
+.big-dial {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.big-dial .bump {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.big-dial .dial-ring-1 {
+  position: absolute;
+  inset: 26px;
+  border-radius: 50%;
+}
+
+.big-dial .dial-ring-2 {
+  position: absolute;
+  inset: 60px;
+  border-radius: 50%;
+}
+
+.big-dial .dial-ring-3 {
+  position: absolute;
+  inset: 92px;
+  border-radius: 50%;
+}
+
+.big-dial .dial-center {
+  position: absolute;
+  inset: 108px;
+  border-radius: 50%;
+}
+
+.big-dial .dial-pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 12px;
+  background: #9aa0ad;
+  border-radius: 2px;
+}
+
+/* ============ KNOB WITH BLUE RING ============ */
+.knob {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.knob .knob-pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 14px;
+  background: #9aa0ad;
+  border-radius: 2px;
+}
+
+.knob .knob-ring {
+  position: absolute;
+  inset: 34px;
+  border-radius: 50%;
+  border: 10px solid var(--nm-blue);
+  box-shadow: 3px 3px 8px var(--nm-shadow-dark), -3px -3px 8px var(--nm-shadow-light);
+}
+
+.knob .knob-core {
+  position: absolute;
+  inset: 58px;
+  border-radius: 50%;
+}
+
+/* ============ DOT GRID SELECTOR ============ */
+.dot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.dot-grid .dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.dot-grid .dot.active {
+  background: var(--nm-blue);
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dot-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 130px;
+  margin-top: 14px;
+  padding: 0 10px;
+}
+
+.dot-ticks span {
+  width: 2px;
+  height: 20px;
+  background: #b6bac6;
+  border-radius: 2px;
+}
+
+/* ============ WEATHER WHEEL ============ */
+.wheel {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.wheel .wedge {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 50%, 50% 0%, 100% 0%);
+}
+
+.wheel .wedge svg,
+.wheel .wedge-icon {
+  position: absolute;
+  color: var(--nm-text-dark);
+}
+
+.wheel .wedge.sun {
+  background: var(--nm-blue);
+  clip-path: polygon(50% 50%, 100% 0%, 100% 50%);
+}
+
+.wheel .wedge.rain {
+  clip-path: polygon(50% 50%, 50% 0%, 100% 0%);
+}
+
+.wheel .wedge.cloud {
+  clip-path: polygon(50% 50%, 0% 100%, 50% 100%, 100% 100%, 100% 50%);
+}
+
+.wheel-divider {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.5);
+  transform-origin: left center;
+}
+
+/* ============ SELECTION TOGGLE ============ */
+.selection-panel {
+  min-width: 320px;
+  flex: 1;
+  padding: 20px 24px;
+  border-radius: 24px;
+}
+
+.selection-panel .panel-label {
+  font-weight: 600;
+  color: var(--nm-text-dark);
+  margin-bottom: 14px;
+  text-align: right;
+}
+
+.seg-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  border-radius: 28px;
+  padding: 6px;
+}
+
+.seg-toggle .seg-label {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  z-index: 1;
+  font-size: 14px;
+}
+
+.seg-toggle .seg-label.on { color: #fff; }
+.seg-toggle .seg-label.off { color: var(--nm-text); }
+
+.seg-toggle .seg-track {
+  position: absolute;
+  inset: 6px;
+  border-radius: 22px;
+  background: var(--nm-blue);
+}
+
+.seg-toggle .seg-thumb {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 44%;
+  height: calc(100% - 12px);
+  border-radius: 20px;
+  transition: left 0.25s ease;
+}
+
+/* ============ BUTTON PAIR ============ */
+.button-pair {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 30px;
+  min-width: 320px;
+}
+
+.button-pair .btn-ghost {
+  padding: 14px 28px;
+  color: var(--nm-text-dark);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.button-pair .btn-solid {
+  padding: 14px 36px;
+  border-radius: 22px;
+  background: var(--nm-blue);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ============ TICKED RANGE SLIDER ============ */
+.ticked-slider {
+  width: 340px;
+  height: 34px;
+  border-radius: 17px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.ticked-slider .slider-fill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  border-radius: 15px;
+  background: var(--nm-blue);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 8px;
+  overflow: hidden;
+}
+
+.ticked-slider .slider-fill span,
+.ticked-slider .slider-ticks span {
+  width: 2px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.ticked-slider .slider-fill span { background: rgba(255, 255, 255, 0.5); }
+.ticked-slider .slider-ticks span { background: #c3c7d1; }
+
+.ticked-slider .slider-ticks {
+  display: flex;
+  gap: 6px;
+  margin-left: 10px;
+}
+
+.ticked-slider .slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ============ CLOCK DIAL ============ */
+.clock-dial {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.clock-dial .clock-pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 14px;
+  background: #9aa0ad;
+}
+
+.clock-dial .clock-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.clock-dial .clock-hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 42%;
+  background: var(--nm-blue);
+  border-radius: 3px;
+  transform-origin: top center;
+  transform: translate(-50%, 0) rotate(35deg);
+}
+
+/* ============ POPUP CARD ============ */
+.popup-card {
+  min-width: 340px;
+  flex: 1;
+  padding: 24px 26px;
+  border-radius: 24px;
+  position: relative;
+}
+
+.popup-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--nm-text-dark);
+  margin-bottom: 10px;
+}
+
+.popup-card p {
+  font-size: 12.5px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--nm-text);
+  margin-bottom: 18px;
+}
+
+.popup-card .popup-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nm-text-dark);
+  cursor: pointer;
+  border: none;
+}
+
+.popup-card .popup-cta {
+  float: right;
+  padding: 12px 26px;
+  border-radius: 20px;
+  background: var(--nm-blue);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ============ FORM CONTROLS ============ */
+.nm-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-radius: 22px;
+  min-width: 180px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--nm-text-dark);
+  cursor: pointer;
+}
+
+.nm-field.filled {
+  background: var(--nm-blue);
+  color: #fff;
+  box-shadow: 3px 3px 6px var(--nm-shadow-dark), -3px -3px 6px var(--nm-shadow-light);
+}
+
+.nm-field input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--nm-text-dark);
+  width: 100%;
+}
+
+.nm-field input::placeholder { color: var(--nm-text); }
+
+/* ============ EXPANDED LIST ============ */
+.expand-list {
+  border-radius: 18px;
+  padding: 10px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.expand-list .list-item {
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  color: var(--nm-text-dark);
+  cursor: pointer;
+}
+
+.expand-list .list-item.selected {
+  background: var(--nm-blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ============ PLAYBACK + ICON BUTTONS ============ */
+.icon-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.icon-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nm-text-dark);
+  cursor: pointer;
+  border: none;
+  flex-shrink: 0;
+}
+
+.icon-btn.sm { width: 44px; height: 44px; }
+
+/* ============ TOGGLES ============ */
+.toggle-switch {
+  width: 64px;
+  height: 34px;
+  border-radius: 17px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toggle-switch.on { background: var(--nm-blue); }
+
+.toggle-switch .toggle-thumb {
+  position: absolute;
+  top: 3px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.2s ease;
+}
+
+.toggle-switch.on .toggle-thumb { left: 33px; }
+.toggle-switch.off .toggle-thumb { left: 3px; background: var(--nm-bg); box-shadow: 2px 2px 4px var(--nm-shadow-dark), -2px -2px 4px var(--nm-shadow-light); }
+
+/* ============ VERTICAL STEPPER ============ */
+.v-stepper {
+  width: 44px;
+  height: 130px;
+  border-radius: 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 14px 0;
+  flex-shrink: 0;
+}
+
+.v-stepper .v-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--nm-blue);
+}
+
+.v-stepper .v-handle {
+  position: absolute;
+  right: -8px;
+  bottom: 16px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+/* ============ MINIMAL LINE SLIDERS ============ */
+.line-slider {
+  position: relative;
+  width: 180px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.line-slider .line-track {
+  width: 100%;
+  height: 2px;
+  background: #c3c7d1;
+}
+
+.line-slider .line-thumb {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+
+.line-slider .line-thumb.bars {
+  width: 30px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.line-slider .line-thumb.bars span {
+  width: 2px;
+  height: 12px;
+  background: #9aa0ad;
+  border-radius: 2px;
+}
+
+/* ============ BIG PROGRESS SLIDER ============ */
+.progress-slider {
+  width: 100%;
+  min-width: 260px;
+  flex: 1;
+  height: 20px;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.progress-slider .progress-fill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  border-radius: 8px;
+  background: var(--nm-blue);
+}
+
+.progress-slider .progress-thumb {
+  position: absolute;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--nm-bg);
+}
+
+/* ============ SMALL MINI TOGGLE SLIDER ============ */
+.mini-slider {
+  width: 200px;
+  height: 30px;
+  border-radius: 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.mini-slider .mini-fill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: 55%;
+  border-radius: 12px;
+  background: var(--nm-blue);
+}
+
+.mini-slider .mini-thumb {
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
