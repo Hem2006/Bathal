@@ -6,10 +6,8 @@ import FaceScan from './components/FaceScan.jsx';
 import TierRow from './components/TierRow.jsx';
 import UnrankedTray from './components/UnrankedTray.jsx';
 import AddItemBar from './components/AddItemBar.jsx';
-import PresenceBar from './components/PresenceBar.jsx';
 import CommandCenter from './components/CommandCenter.jsx';
 import { fetchItems, reorderItems } from './lib/api.js';
-import socket from './lib/socket.js';
 
 const TIERS = ['S', 'A', 'B', 'C', 'D', 'E', 'F'];
 
@@ -44,8 +42,6 @@ export default function App() {
   const [scanned, setScanned] = useState(false);
   const [items, setItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [liveDrags, setLiveDrags] = useState({});
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -58,64 +54,12 @@ export default function App() {
 
   useEffect(() => {
     if (!user || !scanned) return;
-
     loadItems();
-    socket.connect();
-
-    socket.on('connect', () => {
-      socket.emit('presence:join', user.username);
-    });
-
-    socket.on('item:created', (item) => {
-      setItems((prev) => {
-        if (prev.some((i) => i.id === item.id)) return prev;
-        return [...prev, item];
-      });
-    });
-    socket.on('item:updated', (item) => {
-      setItems((prev) => prev.map((i) => (i.id === item.id ? item : i)));
-    });
-    socket.on('item:deleted', ({ id }) => {
-      setItems((prev) => prev.filter((i) => i.id !== id));
-    });
-    socket.on('board:reorder', (updates) => {
-      setItems((prev) => {
-        const next = [...prev];
-        for (const { id, tier, position } of updates) {
-          const idx = next.findIndex((i) => i.id === id);
-          if (idx !== -1) {
-            next[idx] = { ...next[idx], tier, position };
-          }
-        }
-        return next;
-      });
-    });
-    socket.on('presence:update', (usernames) => {
-      setOnlineUsers(usernames);
-    });
-    socket.on('drag:start', ({ itemId, username }) => {
-      setLiveDrags((prev) => ({ ...prev, [itemId]: username }));
-    });
-    socket.on('drag:end', ({ itemId }) => {
-      setLiveDrags((prev) => {
-        const next = { ...prev };
-        delete next[itemId];
-        return next;
-      });
-    });
-
-    return () => {
-      socket.off('connect');
-      socket.off('item:created');
-      socket.off('item:updated');
-      socket.off('item:deleted');
-      socket.off('board:reorder');
-      socket.off('presence:update');
-      socket.off('drag:start');
-      socket.off('drag:end');
-      socket.disconnect();
-    };
   }, [user, scanned, loadItems]);
+
+  function handleUpload(item) {
+    setItems((prev) => (prev.some((i) => i.id === item.id) ? prev : [...prev, item]));
+  }
 
   if (showCommandCenter) {
     return <CommandCenter onOpenTierList={() => setShowCommandCenter(false)} />;
@@ -138,14 +82,10 @@ export default function App() {
 
   function handleDragStart(event) {
     setActiveId(event.active.id);
-    socket.emit('drag:start', { itemId: Number(event.active.id) });
   }
 
-  function handleDragCancel(event) {
+  function handleDragCancel() {
     setActiveId(null);
-    if (event?.active?.id) {
-      socket.emit('drag:end', { itemId: Number(event.active.id) });
-    }
   }
 
   function handleDragOver(event) {
@@ -176,7 +116,6 @@ export default function App() {
   async function handleDragEnd(event) {
     setActiveId(null);
     const { active, over } = event;
-    socket.emit('drag:end', { itemId: Number(active.id) });
     if (!over) return;
 
     const activeItem = items.find((i) => String(i.id) === active.id);
@@ -278,9 +217,7 @@ export default function App() {
         </div>
       </header>
 
-      <PresenceBar users={onlineUsers} currentUsername={user.username} />
-
-      <AddItemBar username={user.username} />
+      <AddItemBar username={user.username} onUpload={handleUpload} />
 
       <div className="page-grid">
         {/* Left sidebar with placeholder image spots, stacked messily */}
@@ -308,11 +245,11 @@ export default function App() {
           >
             <div className="board">
               {TIERS.map((tier) => (
-                <TierRow key={tier} tier={tier} items={itemsForTier(tier)} onDelete={handleDelete} liveDrags={liveDrags} />
+                <TierRow key={tier} tier={tier} items={itemsForTier(tier)} onDelete={handleDelete} />
               ))}
             </div>
 
-            <UnrankedTray items={itemsForTier('UNRANKED')} onDelete={handleDelete} liveDrags={liveDrags} />
+            <UnrankedTray items={itemsForTier('UNRANKED')} onDelete={handleDelete} />
           </DndContext>
         </div>
       </div>

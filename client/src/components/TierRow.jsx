@@ -12,7 +12,7 @@ const TIER_COLORS = {
   F: '#FF6EC7'
 };
 
-export default function TierRow({ tier, items, onDelete, liveDrags }) {
+export default function TierRow({ tier, items, onDelete }) {
   const { setNodeRef, isOver } = useDroppable({ id: `tier-${tier}` });
   const ids = items.map((i) => String(i.id));
 
@@ -24,12 +24,7 @@ export default function TierRow({ tier, items, onDelete, liveDrags }) {
       <div ref={setNodeRef} className="tier-items">
         <SortableContext items={ids} strategy={horizontalListSortingStrategy}>
           {items.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              onDelete={onDelete}
-              draggedByOther={liveDrags?.[item.id]}
-            />
+            <ItemCard key={item.id} item={item} onDelete={onDelete} />
           ))}
         </SortableContext>
       </div>

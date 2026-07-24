@@ -1,6 +1,4 @@
-import { API_BASE } from './config.js';
-
-const API = `${API_BASE}/api`;
+const API = '/api';
 
 export async function register(username, password) {
   const res = await fetch(`${API}/register`, {

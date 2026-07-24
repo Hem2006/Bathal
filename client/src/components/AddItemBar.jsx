@@ -1,14 +1,15 @@
 import { useState, useRef } from 'react';
 import { uploadImage } from '../lib/api.js';
 
-export default function AddItemBar({ username }) {
+export default function AddItemBar({ username, onUpload }) {
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef(null);
 
   async function handleFiles(files) {
     for (const file of files) {
       if (file.type.startsWith('image/')) {
-        await uploadImage(file, null, username);
+        const item = await uploadImage(file, null, username);
+        onUpload?.(item);
       }
     }
   }
